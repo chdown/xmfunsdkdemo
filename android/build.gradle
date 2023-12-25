@@ -1,0 +1,75 @@
+group 'demo.xm.com.xmfunsdkdemo.xmfunsdkdemo'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    if (project.android.hasProperty("namespace")) {
+        namespace 'demo.xm.com.xmfunsdkdemo.xmfunsdkdemo'
+    }
+
+    compileSdkVersion 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+    }
+
+    dependencies {
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+        testImplementation 'org.mockito:mockito-core:5.0.0'
+
+        implementation 'io.github.xmcamera:libxmfunsdk:4.0' //或者直接从Demo中获取aar文件加载
+        implementation 'io.github.xmcamera:uilibrary:2.1' //或者直接从Demo中获取aar文件加载
+        implementation 'com.alibaba:fastjson:1.1.72.android'
+        implementation 'org.apache.commons:commons-lang3:3.12.0'
+        implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
+        implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+
+            testLogging {
+               events "passed", "skipped", "failed", "standardOut", "standardError"
+               outputs.upToDateWhen {false}
+               showStandardStreams = true
+            }
+        }
+    }
+}
